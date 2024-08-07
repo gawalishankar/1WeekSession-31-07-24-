@@ -1,0 +1,125 @@
+package CustomerSystem;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+class Customer {
+    private int customerId;
+    private String name;
+    private String email;
+
+    public Customer(int customerId, String name, String email) {
+        this.customerId = customerId;
+        this.name = name;
+        this.email = email;
+    }
+
+    public int getCustomerId() {
+        return customerId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    @Override
+    public String toString() {
+        return "ID: " + customerId + ", Name: " + name + ", Email: " + email;
+    }
+}
+
+// CUSTOMERMANGEMENTSYSTEM CLASS
+
+package CustomerSystem;
+class CustomerManagementSystem {
+    private List<Customer> customers;
+
+    public CustomerManagementSystem() {
+        this.customers = new ArrayList<>();
+    }
+
+    public void addCustomer(int customerId, String name, String email) {
+        Customer newCustomer = new Customer(customerId, name, email);
+        customers.add(newCustomer);
+        System.out.println("Customer " + name + " added successfully.");
+    }
+
+    public void removeCustomer(int customerId) {
+        for (Customer customer : customers) {
+            if (customer.getCustomerId() == customerId) {
+                customers.remove(customer);
+                System.out.println("Customer with ID " + customerId + " removed successfully.");
+                return;
+            }
+        }
+        System.out.println("Customer with ID " + customerId + " not found.");
+    }
+
+    public Customer searchCustomer(int customerId) {
+        for (Customer customer : customers) {
+            if (customer.getCustomerId() == customerId) {
+                return customer;
+            }
+        }
+        System.out.println("Customer with ID " + customerId + " not found.");
+        return null;
+    }
+
+    public void listCustomers() {
+        if (customers.isEmpty()) {
+            System.out.println("No customers in the list.");
+            return;
+        }
+        for (Customer customer : customers) {
+            System.out.println(customer);
+        }
+    }
+
+    public void sortCustomersByName() {
+        Collections.sort(customers, Comparator.comparing(Customer::getName));
+        System.out.println("Customers sorted by name.");
+    }
+
+    public void sortCustomersById() {
+        Collections.sort(customers, Comparator.comparingInt(Customer::getCustomerId));
+        System.out.println("Customers sorted by ID.");
+    }
+}
+
+//MAIN CLASS
+package CustomerSystem;
+public class Main {
+    public static void main(String[] args) {
+        CustomerManagementSystem cms = new CustomerManagementSystem();
+
+        cms.addCustomer(1, "John Doe", "john@example.com");
+        cms.addCustomer(2, "Jane Smith", "jane@example.com");
+        cms.addCustomer(3, "Alice Johnson", "alice@example.com");
+
+        System.out.println("\nAll Customers:");
+        cms.listCustomers();
+
+        System.out.println("\nSearch for Customer with ID 2:");
+        Customer customer = cms.searchCustomer(2);
+        if (customer != null) {
+            System.out.println(customer);
+        }
+
+        System.out.println("\nSort Customers by Name:");
+        cms.sortCustomersByName();
+        cms.listCustomers();
+
+        System.out.println("\nSort Customers by ID:");
+        cms.sortCustomersById();
+        cms.listCustomers();
+
+        System.out.println("\nRemove Customer with ID 1:");
+        cms.removeCustomer(1);
+        cms.listCustomers();
+    }
+}
